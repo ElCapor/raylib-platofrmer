@@ -6,6 +6,7 @@
 #include <raylib.h>
 #include <vector>
 
+// a simple class to deal with texture atlases such as the ones in kenney's assets
 class TextureAtlas
 {
 
@@ -85,11 +86,13 @@ private:
 };
 
 
+// a class to provide access to the loaded atlases in memory
 class TextureAtlasManager
 {
 public:
 	static TextureAtlasManager* instance;
 
+	// todo : refactor this ugly singleton maybe
 	static TextureAtlasManager* GetInstance()
 	{
 		if (!instance)

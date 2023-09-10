@@ -3,6 +3,7 @@
 #include "Scene.h"
 #include <raylib.h>
 #include <pugixml.hpp>
+// the main menu of the game
 class MainMenuScene : public Scene
 {
 public:
@@ -10,7 +11,6 @@ public:
 	void Update() override;
 	void Draw() override;
 	void Unload() override;
-
 };
 
 #endif // !MAINMENUSCENE_HPP

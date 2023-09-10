@@ -5,38 +5,36 @@
 #include <string>
 #include "TextureAtlas.h"
 
+// helper function to auto size font for buttons
 static int GetMaxFontSize(const std::string& text, const Vector2& buttonSize, const Font& font, float spacing = 0, Vector2 padding = { 0, 0 })
 {
-    int fontSize = GetFontDefault().baseSize; // Start with an initial font size
-
-    // Measure the text's size with the current font size, including padding
+    int fontSize = GetFontDefault().baseSize;
     Vector2 textSize = MeasureTextEx(font, text.c_str(), fontSize, spacing);
 
-    // Calculate the maximum allowed width and height for the text
-    float maxWidth = buttonSize.x - (2 * padding.x);
+    float maxWidth = buttonSize.x - (2 * padding.x); // cuz padding is left & right
     float maxHeight = buttonSize.y - (2 * padding.y);
 
-    // Keep reducing the font size until it fits within the button's dimensions
+    
     while (textSize.x < maxWidth && textSize.y < maxHeight)
     {
         fontSize++;
-
-        // Re-measure the text's size with the updated font size, including padding
         textSize = MeasureTextEx(font, text.c_str(), fontSize, spacing);
     }
 
     return fontSize;
 }
 
+// abstract gui element class
 class GUIElement {
 public:
     virtual void Init() = 0;
     virtual void Draw() = 0;
     virtual void Update() = 0;
-    // Add other common methods and properties here
 };
 
 
+// default button with blue texture
+// todo : refactor this ugly mess
 class GUIButton : public GUIElement {
 public:
     GUIButton()
@@ -59,9 +57,11 @@ public:
         total_bb = { position.x, position.y, size.x, size.y };
     }
 
-    // Methods for initializing, updating, and drawing the button
+    
     void Init() {
-        
+        // shouldnt i be setting & loading everything here ?
+        // because atlas manager might not be init when we call the constructor
+        // while in this function we are sure a 1000% that it is
     }
     void Update() override
     {
@@ -85,29 +85,28 @@ public:
     }
     void Draw() override
     {
-        // Draw the button background
-        //DrawRectangle(position.x, position.y, size.x, size.y, color);
+        // texture test
+        // DrawRectangle(position.x, position.y, size.x, size.y, color);
         Texture2D currentTexture = isHovered ? hoverTexture : idleTexture;
         if (isClicked)
         {
+            // click is more important than behaviour
             currentTexture = clickTexture;
         }
 
+        // we have to do this to resize the texture on the fly
         DrawTexturePro(currentTexture, { 0,0, (float)currentTexture.width, (float)currentTexture.height }, { position.x, position.y, size.x, size.y }, { 0, 0 }, 0, WHITE);
         
         float spacing = 5; // font spacing
-
-        // Calculate the maximum font size that fits within the button
         int fontSize = GetMaxFontSize(text, size, GetFontDefault(), 5, padding);
 
-        // Calculate the position to center the text, considering spacing and equal left/right padding
+        //todo : fix and adapt this pasta code
         float textX = position.x - size.x / 2 + MeasureTextEx(GetFontDefault(), text.c_str(), fontSize, spacing).x / 2 + padding.x*2;
         float textY = position.y + size.y / 2 - fontSize / 2;
 
+        Color textColor = isHovered ? BLACK : WHITE; // because the hover texture is white
 
-        Color textColor = isHovered ? BLACK : WHITE;
-
-        // Draw the centered text with the calculated font size
+        // draw the text in the middle
         DrawTextEx(GetFontDefault(), text.c_str(), { textX, textY }, fontSize, spacing, textColor);
     }
 
@@ -118,12 +117,12 @@ private:
     Color color;       // Color of button
     std::string text;  // Text or label displayed on the button
     bool isHovered;    // Flag to track if the mouse is hovering over the button
-    bool isClicked;
+    bool isClicked;    // Flag to track if the mouse is clicking the button
     std::function<void(GUIButton* self)> onClick;  // Callback function to be called on button click
-    Texture2D idleTexture;
-    Texture2D hoverTexture;
-    Texture2D clickTexture;
-    Rectangle total_bb;
+    Texture2D idleTexture; // fix this ugly mess probably
+    Texture2D hoverTexture; //
+    Texture2D clickTexture; //
+    Rectangle total_bb; //
 };
 
 

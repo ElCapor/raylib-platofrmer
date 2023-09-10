@@ -1,8 +1,8 @@
 #include "GameManager.hpp"
 #include "MainMenuScene.hpp"
+
 void GameManager::Initialize()
 {
-
     this->AddScene("mainMenu", std::make_unique<MainMenuScene>());
     this->ChangeScene("mainMenu");
 }
@@ -23,7 +23,6 @@ void GameManager::AddScene(const std::string& name, std::unique_ptr<Scene> scene
         }
     }
 
-    // If both checks passed, add the scene to the map
     scenes[name] = std::move(scene);
 }
 
