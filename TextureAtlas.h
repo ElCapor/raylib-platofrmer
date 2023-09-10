@@ -60,10 +60,13 @@ public:
 
 	Texture2D Rect2Texture(std::string name)
 	{
-
-		Image cropped = ImageCopy(LoadImageFromTexture(spriteSheet));
-		ImageCrop(&cropped, GetSubRectangle(name));
-		return LoadTextureFromImage(cropped);
+		Image image = LoadImageFromTexture(spriteSheet);
+		
+		Image cropped = ImageCopy(image);
+		Rectangle subRectangle = GetSubRectangle(name);
+		ImageCrop(&cropped, subRectangle);
+		Texture2D tex = LoadTextureFromImage(cropped);
+		return tex;
 	}
 
 	std::vector<std::string> GetAvaliableTextures()

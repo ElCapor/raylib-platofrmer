@@ -17,9 +17,11 @@ bool Game::Initialize()
     InitWindow(screenWidth, screenHeight, "Game");
     
     SetTargetFPS(60);
-    this->g_GameManager->Initialize();
     LayoutManager::GetInstance()->Init();
 
+    this->g_GameManager->Initialize();
+
+    
     
     return true;
 }

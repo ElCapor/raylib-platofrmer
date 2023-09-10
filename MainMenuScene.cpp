@@ -4,16 +4,16 @@
 TextureAtlasManager* TextureAtlasManager::instance = nullptr;
 
 
+GUIButton playBtn;
 
-/*GUIButton playBtn = GUIButton({300,150}, {100, 100}, "Start", BLUE, []() {
-		
-	});*/
 void MainMenuScene::Load()
 {
 	//loading logic here
 	TraceLog(LOG_DEBUG, __FUNCTION__);
-	
-	//LayoutManager::GetInstance()->AddElement(&playBtn);
+	playBtn = GUIButton({ 300,150 }, { 100, 100 }, "Start", BLUE, []() {
+
+		});
+	LayoutManager::GetInstance()->AddElement(&playBtn);
 	
 }
 

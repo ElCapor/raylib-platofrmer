@@ -39,6 +39,10 @@ public:
 
 class GUIButton : public GUIElement {
 public:
+    GUIButton()
+    {
+
+    }
     GUIButton(Vector2 position, Vector2 size, const std::string& text = "", Color color = BLUE,
         std::function<void()> onClickCallback = 0, Vector2 padding = { 5,5 })
     {
@@ -60,18 +64,29 @@ public:
     }
     void Update() override
     {
-        if (IsMouseButtonPressed(0) && CheckCollisionPointRec(GetMousePosition(), total_bb))
+        if (CheckCollisionPointRec(GetMousePosition(), total_bb))
         {
-            TraceLog(LOG_INFO, "Button clicked !");
-            this->padding = { padding.x + 5, padding.y + 5 };
+            if (IsMouseButtonPressed(0))
+            {
+                TraceLog(LOG_INFO, "Button clicked !");
+                this->padding = { padding.x + 5, padding.y + 5 };
+                isClicked = true;
+            }
+            isHovered = true;
         }
-
+        else {
+            isClicked = false;
+            isHovered = false;
+        }
+        
     }
     void Draw() override
     {
         // Draw the button background
         //DrawRectangle(position.x, position.y, size.x, size.y, color);
-        DrawTexturePro(this->idleTexture, { 0,0, (float)idleTexture.width, (float)idleTexture.height }, { 0, 0, size.x, size.y }, { position.x, position.y }, 0, WHITE);
+        Texture2D currentTexture = isHovered || isClicked ? hoverTexture : idleTexture;
+
+        DrawTexturePro(currentTexture, { 0,0, (float)currentTexture.width, (float)currentTexture.height }, { position.x, position.y, size.x, size.y }, { 0, 0 }, 0, WHITE);
         
         float spacing = 5; // font spacing
 
@@ -94,6 +109,7 @@ private:
     Color color;       // Color of button
     std::string text;  // Text or label displayed on the button
     bool isHovered;    // Flag to track if the mouse is hovering over the button
+    bool isClicked;
     std::function<void()> onClick;  // Callback function to be called on button click
     Texture2D idleTexture;
     Texture2D hoverTexture;

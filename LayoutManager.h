@@ -18,7 +18,7 @@ public:
     }
     // Add a GUIElement to the layout
     void AddElement(GUIElement* element) {
-        elements.push_back(element);
+        elements.emplace_back(element);
     }
 
     // Remove a GUIElement from the layout
@@ -41,6 +41,15 @@ public:
     void Draw() {
         for (auto& element : elements) {
             element->Draw();
+        }
+    }
+
+    // Remove all elements
+    void Clear()
+    {
+        for (auto& element : elements)
+        {
+            RemoveElement(element);
         }
     }
 
