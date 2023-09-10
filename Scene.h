@@ -1,5 +1,6 @@
 #ifndef SCENE_HPP
 #define SCENE_HPP
+// abstract class to represent a scene
 class Scene {
 public:
     virtual void Load() = 0;
