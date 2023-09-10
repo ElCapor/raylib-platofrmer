@@ -10,8 +10,8 @@ void MainMenuScene::Load()
 {
 	//loading logic here
 	TraceLog(LOG_DEBUG, __FUNCTION__);
-	playBtn = GUIButton({ 300,150 }, { 100, 100 }, "Start", BLUE, []() {
-
+	playBtn = GUIButton({ 300,150 }, { 100, 100 }, "Start", BLUE, [](GUIButton* self) {
+			
 		});
 	LayoutManager::GetInstance()->AddElement(&playBtn);
 	

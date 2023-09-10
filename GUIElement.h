@@ -44,7 +44,7 @@ public:
 
     }
     GUIButton(Vector2 position, Vector2 size, const std::string& text = "", Color color = BLUE,
-        std::function<void()> onClickCallback = 0, Vector2 padding = { 5,5 })
+        std::function<void(GUIButton* self)> onClickCallback = 0, Vector2 padding = { 5,5 })
     {
         this->position = position;
         this->size = size;
@@ -54,7 +54,8 @@ public:
         this->padding = padding;
         this->idleTexture = TextureAtlasManager::GetInstance()->GetTexureAtlas("blueSheet").Rect2Texture("blue_button00.png");
         // default behaviour , hover & click are the same
-        this->hoverTexture = this->clickTexture = TextureAtlasManager::GetInstance()->GetTexureAtlas("blueSheet").Rect2Texture("blue_button01.png");
+        this->hoverTexture = TextureAtlasManager::GetInstance()->GetTexureAtlas("blueSheet").Rect2Texture("blue_button13.png");
+        this->clickTexture = TextureAtlasManager::GetInstance()->GetTexureAtlas("blueSheet").Rect2Texture("blue_button01.png");
         total_bb = { position.x, position.y, size.x, size.y };
     }
 
@@ -68,9 +69,11 @@ public:
         {
             if (IsMouseButtonPressed(0))
             {
-                TraceLog(LOG_INFO, "Button clicked !");
-                this->padding = { padding.x + 5, padding.y + 5 };
                 isClicked = true;
+                onClick(this);
+            }
+            else {
+                isClicked = false;
             }
             isHovered = true;
         }
@@ -84,7 +87,11 @@ public:
     {
         // Draw the button background
         //DrawRectangle(position.x, position.y, size.x, size.y, color);
-        Texture2D currentTexture = isHovered || isClicked ? hoverTexture : idleTexture;
+        Texture2D currentTexture = isHovered ? hoverTexture : idleTexture;
+        if (isClicked)
+        {
+            currentTexture = clickTexture;
+        }
 
         DrawTexturePro(currentTexture, { 0,0, (float)currentTexture.width, (float)currentTexture.height }, { position.x, position.y, size.x, size.y }, { 0, 0 }, 0, WHITE);
         
@@ -98,8 +105,10 @@ public:
         float textY = position.y + size.y / 2 - fontSize / 2;
 
 
+        Color textColor = isHovered ? BLACK : WHITE;
+
         // Draw the centered text with the calculated font size
-        DrawTextEx(GetFontDefault(), text.c_str(), { textX, textY }, fontSize, spacing, WHITE);
+        DrawTextEx(GetFontDefault(), text.c_str(), { textX, textY }, fontSize, spacing, textColor);
     }
 
 private:
@@ -110,7 +119,7 @@ private:
     std::string text;  // Text or label displayed on the button
     bool isHovered;    // Flag to track if the mouse is hovering over the button
     bool isClicked;
-    std::function<void()> onClick;  // Callback function to be called on button click
+    std::function<void(GUIButton* self)> onClick;  // Callback function to be called on button click
     Texture2D idleTexture;
     Texture2D hoverTexture;
     Texture2D clickTexture;
