@@ -98,11 +98,14 @@ public:
         DrawTexturePro(currentTexture, { 0,0, (float)currentTexture.width, (float)currentTexture.height }, { position.x, position.y, size.x, size.y }, { 0, 0 }, 0, WHITE);
         
         float spacing = 5; // font spacing
-        int fontSize = GetMaxFontSize(text, size, GetFontDefault(), 5, padding);
+        int fontSize = 30; //GetMaxFontSize(text, size, GetFontDefault(), 5, padding);
 
         //todo : fix and adapt this pasta code
-        float textX = position.x - size.x / 2 + MeasureTextEx(GetFontDefault(), text.c_str(), fontSize, spacing).x / 2 + padding.x*2;
-        float textY = position.y + size.y / 2 - fontSize / 2;
+        //float textX = position.x - size.x / 2 + MeasureTextEx(GetFontDefault(), text.c_str(), fontSize, spacing).x / 2 + padding.x*2;
+        //float textY = position.y + size.y / 2 - fontSize / 2;
+
+        float textX = position.x + size.x / 2;
+        float textY = position.y + size.y / 2;
 
         Color textColor = isHovered ? BLACK : WHITE; // because the hover texture is white
 

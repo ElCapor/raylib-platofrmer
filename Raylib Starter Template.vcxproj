@@ -136,11 +136,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="flexrect.h" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameManager.hpp" />
     <ClInclude Include="GUIElement.h" />
+    <ClInclude Include="LayoutEditorScene.hpp" />
     <ClInclude Include="LayoutManager.h" />
     <ClInclude Include="MainMenuScene.hpp" />
+    <ClInclude Include="raygui.h" />
     <ClInclude Include="raylib-assert.hpp" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="TextureAtlas.h" />
@@ -148,6 +151,7 @@
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="LayoutEditorScene.cpp" />
     <ClCompile Include="MainMenuScene.cpp" />
     <ClCompile Include="raylib_game.cpp" />
   </ItemGroup>

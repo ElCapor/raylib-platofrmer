@@ -48,6 +48,15 @@
     <ClInclude Include="GUIElement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="raygui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LayoutEditorScene.hpp">
+      <Filter>Header Files\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="flexrect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -60,6 +69,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MainMenuScene.cpp">
+      <Filter>Source Files\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="LayoutEditorScene.cpp">
       <Filter>Source Files\scenes</Filter>
     </ClCompile>
   </ItemGroup>

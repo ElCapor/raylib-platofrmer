@@ -1,10 +1,13 @@
 #include "GameManager.hpp"
 #include "MainMenuScene.hpp"
-
+#include "LayoutEditorScene.hpp"
 void GameManager::Initialize()
 {
-    this->AddScene("mainMenu", std::make_unique<MainMenuScene>());
-    this->ChangeScene("mainMenu");
+    //this->AddScene("mainMenu", std::make_unique<MainMenuScene>());
+    //this->ChangeScene("mainMenu");
+
+    this->AddScene("layoutEditor", std::make_unique<LayoutEditorScene>());
+    this->ChangeScene("layoutEditor");
 }
 
 void GameManager::AddScene(const std::string& name, std::unique_ptr<Scene> scene)
