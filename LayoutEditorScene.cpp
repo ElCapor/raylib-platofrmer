@@ -28,6 +28,17 @@ TextureAtlas atlas;
 
 TileSet* tileSet;
 TileMap* tileMap;
+
+// fake camera
+typedef struct {
+	float x;
+	float y;
+	int w;
+	int h;
+}View;
+
+void Inputs();
+View cam;
 void LayoutEditorScene::Load()
 {
 	//loading logic here
@@ -48,15 +59,31 @@ void LayoutEditorScene::Load()
 	tileSet = TileSetNewInitFromFile("assets/tilemap_packed.png", 16, 16, NULL, 0);
 	tileMap = TileMapNew();
 	tileMap->tileSet = tileSet;
-	tileMap->x = flexDrawSpace->r.x;
-	tileMap->y = flexDrawSpace->r.y;
-	TileMapInitSize(tileMap, flexDrawSpace->r.w, flexDrawSpace->r.h);
+	tileMap->x = tileSetFlex->r.x;
+	tileMap->y = tileSetFlex->r.y;
+
+	TileMapInitSize(tileMap, tileSetFlex->r.w/16 +1, tileSetFlex->r.h/16);
+	int tilesPerRow = 18; // Number of tiles per row in the tileset
+	int tileindex = 0;
+	for (int i = 0; i < tileMap->width * tileMap->height; i++) {
+		if (tileindex < 126)
+		{
+			if (i % 19 == 0) // hardcoded shit lmao
+			{
+				continue;
+			}
+			tileMap->grid[i] = tileindex;
+			tileindex++;
+		}
+	}
+	cam = { (float)tileMap->x, (float)tileMap->y, tileSetFlex->r.w, tileSetFlex->r.h };
+
 }
 
 void LayoutEditorScene::Update()
 {
 	// Update logic here
-
+	Inputs();
 
 }
 
@@ -80,7 +107,7 @@ void LayoutEditorScene::Draw()
 		DrawRectangleLines(button2Rect->r.x, button2Rect->r.y, button2Rect->r.w, button2Rect->r.h, RED);
 		DrawRectangleLines(lineSep->r.x, lineSep->r.y, lineSep->r.w, lineSep->r.h, RED);
 		DrawRectangleLines(tileSetFlex->r.x, tileSetFlex->r.y, tileSetFlex->r.w, tileSetFlex->r.h, RED);
-		DrawRectangleLines(flexDrawSpace->r.x, flexDrawSpace->r.y, flexDrawSpace->r.w, flexDrawSpace->r.h, RED);
+		//DrawRectangleLines(flexDrawSpace->r.x, flexDrawSpace->r.y, flexDrawSpace->r.w, flexDrawSpace->r.h, BLUE);
 
 
 		//DrawRectangleLines(lineSepLabel->r.x, lineSepLabel->r.y, lineSepLabel->r.w, lineSepLabel->r.h, RED);
@@ -102,7 +129,8 @@ void LayoutEditorScene::Draw()
 	}
 
 	TileMapDrawGrid(tileMap, BLACK);
-
+	TileMapDrawExWorld(tileMap, (int)cam.x, (int)cam.y, cam.w, cam.h);
+	DrawRectangleLines(cam.x, cam.y, cam.w, cam.h, LIGHTGRAY);
 	
 
 
@@ -112,4 +140,10 @@ void LayoutEditorScene::Unload()
 {
 	// Unload logic here
 	TraceLog(LOG_DEBUG, "LayoutEditorScene::Unload");
+}
+
+// move fake camera
+void Inputs() {
+	cam.x += ((int)(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) - (int)(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT))) * 0.5;
+	cam.y += ((int)(IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) - (int)(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP))) * 0.5;
 }
