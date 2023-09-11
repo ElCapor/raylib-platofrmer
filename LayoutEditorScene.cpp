@@ -50,7 +50,7 @@ void LayoutEditorScene::Load()
 	tileMap->tileSet = tileSet;
 	tileMap->x = flexDrawSpace->r.x;
 	tileMap->y = flexDrawSpace->r.y;
-	TileMapInitSize(tileMap, flexDrawSpace->r.h, flexDrawSpace->r.w);
+	TileMapInitSize(tileMap, flexDrawSpace->r.w, flexDrawSpace->r.h);
 }
 
 void LayoutEditorScene::Update()
