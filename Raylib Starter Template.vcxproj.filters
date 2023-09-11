@@ -57,6 +57,15 @@
     <ClInclude Include="flexrect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="autotile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tilemap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tileset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">

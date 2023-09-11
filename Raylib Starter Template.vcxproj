@@ -136,6 +136,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="autotile.h" />
     <ClInclude Include="flexrect.h" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameManager.hpp" />
@@ -147,6 +148,8 @@
     <ClInclude Include="raylib-assert.hpp" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="TextureAtlas.h" />
+    <ClInclude Include="tilemap.h" />
+    <ClInclude Include="tileset.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
