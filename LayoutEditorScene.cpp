@@ -43,6 +43,14 @@ void LayoutEditorScene::Load()
 	tileSetFlex = FlexRectCreateChild(flexChild1, 0.0f, 0.2f, 1.0f, 1.0f, 10, 10, 10, 10, 50, 30);
 
 	atlas = TextureAtlasManager::GetInstance()->GetTexureAtlas("blueSheet");
+
+
+	tileSet = TileSetNewInitFromFile("assets/tilemap_packed.png", 16, 16, NULL, 0);
+	tileMap = TileMapNew();
+	tileMap->tileSet = tileSet;
+	tileMap->x = flexDrawSpace->r.x;
+	tileMap->y = flexDrawSpace->r.y;
+	TileMapInitSize(tileMap, flexDrawSpace->r.h, flexDrawSpace->r.w);
 }
 
 void LayoutEditorScene::Update()
@@ -92,6 +100,8 @@ void LayoutEditorScene::Draw()
 	{
 
 	}
+
+	TileMapDrawGrid(tileMap, BLACK);
 
 	
 
