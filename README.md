@@ -1,2 +1,2 @@
-# AppleCatcher2D
+# Platformer
 My first game with raylib , W.I.P
