@@ -29,16 +29,11 @@ TextureAtlas atlas;
 TileSet* tileSet;
 TileMap* tileMap;
 
-// fake camera
-typedef struct {
-	float x;
-	float y;
-	int w;
-	int h;
-}View;
+TileMap* tileMapRender;
 
-void Inputs();
-View cam;
+int selectedTileIndex = -1;
+
+
 void LayoutEditorScene::Load()
 {
 	//loading logic here
@@ -62,11 +57,18 @@ void LayoutEditorScene::Load()
 	tileMap->x = tileSetFlex->r.x;
 	tileMap->y = tileSetFlex->r.y;
 
+	tileMapRender = TileMapNew();
+	tileMapRender->tileSet = tileSet;
+	tileMapRender->x = flexDrawSpace->r.x;
+	tileMapRender->y = flexDrawSpace->r.y;
+
+	TileMapInitSize(tileMapRender, flexDrawSpace->r.w / 16 + 1, flexDrawSpace->r.h / 16 + 1);
+
 	TileMapInitSize(tileMap, tileSetFlex->r.w/16 +1, tileSetFlex->r.h/16);
 	int tilesPerRow = 18; // Number of tiles per row in the tileset
 	int tileindex = 0;
 	for (int i = 0; i < tileMap->width * tileMap->height; i++) {
-		if (tileindex < 126)
+		if (tileindex < tileMap->tileSet->tileCount)
 		{
 			if (i % 19 == 0) // hardcoded shit lmao
 			{
@@ -76,14 +78,58 @@ void LayoutEditorScene::Load()
 			tileindex++;
 		}
 	}
-	cam = { (float)tileMap->x, (float)tileMap->y, tileSetFlex->r.w, tileSetFlex->r.h };
+	
 
 }
 
 void LayoutEditorScene::Update()
 {
 	// Update logic here
-	Inputs();
+	// Check if the left mouse button was pressed
+	if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+	{
+		// Get the mouse coordinates
+		int mouseX = GetMouseX();
+		int mouseY = GetMouseY();
+
+		// Calculate the grid position based on the mouse coordinates and tile size
+		int tileX = (mouseX - tileMap->x) / tileSet->tileX;
+		int tileY = (mouseY - tileMap->y) / tileSet->tileY;
+
+		// Check if the click is within the bounds of the tilemap
+		if (tileX >= 0 && tileX < tileMap->width && tileY >= 0 && tileY < tileMap->height)
+		{
+			// The user clicked on the tile at (tileX, tileY)
+			// You can now perform actions based on this click.
+			int gridIndex = tileY * tileMap->width + tileX;
+			int tileIndex = tileMap->grid[gridIndex];
+			// Perform actions with tileIndex or gridIndex as needed.
+			TraceLog(LOG_INFO, "GridIndex %d , tileIndex %d", gridIndex, tileIndex);
+			selectedTileIndex = tileIndex;
+		}
+	}
+	if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+	{
+		// Get the mouse coordinates
+		int mouseX = GetMouseX();
+		int mouseY = GetMouseY();
+
+		// Calculate the grid position based on the mouse coordinates and tile size
+		int tileX = (mouseX - tileMapRender->x) / tileSet->tileX;
+		int tileY = (mouseY - tileMapRender->y) / tileSet->tileY;
+
+		// Check if the click is within the bounds of the tilemap
+		if (tileX >= 0 && tileX < tileMapRender->width && tileY >= 0 && tileY < tileMapRender->height)
+		{
+			// The user clicked on the tile at (tileX, tileY)
+			// You can now perform actions based on this click.
+			int gridIndex = tileY * tileMapRender->width + tileX;
+			int tileIndex = tileMapRender->grid[gridIndex];
+			// Perform actions with tileIndex or gridIndex as needed.
+			TraceLog(LOG_INFO, "GridIndex %d , tileIndex %d", gridIndex, tileIndex);
+			tileMapRender->grid[gridIndex] = selectedTileIndex;
+		}
+	}
 
 }
 
@@ -129,8 +175,10 @@ void LayoutEditorScene::Draw()
 	}
 
 	TileMapDrawGrid(tileMap, BLACK);
-	TileMapDrawExWorld(tileMap, (int)cam.x, (int)cam.y, cam.w, cam.h);
-	DrawRectangleLines(cam.x, cam.y, cam.w, cam.h, LIGHTGRAY);
+	TileMapDrawExWorld(tileMap, (int)tileSetFlex->r.x, (int)tileSetFlex->r.y, tileSetFlex->r.w, tileSetFlex->r.h);
+	TileMapDrawGrid(tileMapRender, BLACK);
+	TileMapDrawExWorld(tileMapRender, (int)flexDrawSpace->r.x, (int)flexDrawSpace->r.y, flexDrawSpace->r.w, flexDrawSpace->r.h);
+	//DrawRectangleLines(cam.x, cam.y, cam.w, cam.h, GREEN);
 	
 
 
@@ -142,8 +190,3 @@ void LayoutEditorScene::Unload()
 	TraceLog(LOG_DEBUG, "LayoutEditorScene::Unload");
 }
 
-// move fake camera
-void Inputs() {
-	cam.x += ((int)(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) - (int)(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT))) * 0.5;
-	cam.y += ((int)(IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) - (int)(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP))) * 0.5;
-}
