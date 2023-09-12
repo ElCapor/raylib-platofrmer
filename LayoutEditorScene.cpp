@@ -46,12 +46,12 @@ void LayoutEditorScene::Load()
 	button2Rect = FlexRectCreateChild(flexChild1, 0.5f, 0.0f, 1.0f, 0.1f, 10, 10, 10, 10, 50, 30);
 	lineSep = FlexRectCreateChild(flexChild1, 0.0f, 0.1f, 1.0f, 0.0001f, 0, 20, 0, 20, 50, 30);
 	lineSepLabel = FlexRectCreateChild(lineSep, 0.25f, 0.0f, 0.75f, 0, 0, 0, 0, 0, 50, 30);
-	tileSetFlex = FlexRectCreateChild(flexChild1, 0.0f, 0.2f, 1.0f, 1.0f, 10, 10, 10, 10, 50, 30);
+	tileSetFlex = FlexRectCreateChild(flexChild1, 0.0f, 0.6f, 1.0f, 1.0f, 10, 10, 10, 10, 50, 30);
 
 	atlas = TextureAtlasManager::GetInstance()->GetTexureAtlas("blueSheet");
 
 
-	tileSet = TileSetNewInitFromFile("assets/tilemap_packed.png", 16, 16, NULL, 0);
+	tileSet = TileSetNewInitFromFile("assets/tilemap_packed.png", 18, 18, NULL, 0);
 	tileMap = TileMapNew();
 	tileMap->tileSet = tileSet;
 	tileMap->x = tileSetFlex->r.x;
@@ -62,18 +62,15 @@ void LayoutEditorScene::Load()
 	tileMapRender->x = flexDrawSpace->r.x;
 	tileMapRender->y = flexDrawSpace->r.y;
 
-	TileMapInitSize(tileMapRender, flexDrawSpace->r.w / 16 + 1, flexDrawSpace->r.h / 16 + 1);
+	TileMapInitSize(tileMapRender, flexDrawSpace->r.w / 18, flexDrawSpace->r.h / 18);
 
-	TileMapInitSize(tileMap, tileSetFlex->r.w/16 +1, tileSetFlex->r.h/16);
-	int tilesPerRow = 18; // Number of tiles per row in the tileset
+	TileMapInitSize(tileMap, tileSetFlex->r.w/18, tileSetFlex->r.h/18);
+	int tilesPerRow = 16; // Number of tiles per row in the tileset
 	int tileindex = 0;
 	for (int i = 0; i < tileMap->width * tileMap->height; i++) {
 		if (tileindex < tileMap->tileSet->tileCount)
 		{
-			if (i % 19 == 0) // hardcoded shit lmao
-			{
-				continue;
-			}
+			
 			tileMap->grid[i] = tileindex;
 			tileindex++;
 		}
@@ -108,7 +105,7 @@ void LayoutEditorScene::Update()
 			selectedTileIndex = tileIndex;
 		}
 	}
-	if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+	if (IsMouseButtonDown(MOUSE_LEFT_BUTTON))
 	{
 		// Get the mouse coordinates
 		int mouseX = GetMouseX();
