@@ -36,12 +36,7 @@ int selectedTileIndex = -1;
 TileMap2 tm;
 TileSet2 ts;
 
-Viewport viewport = {
-	0,
-	0,
-	15,
-	15
-};
+Viewport viewport;
 void LayoutEditorScene::Load()
 {
 	//loading logic here
@@ -83,8 +78,14 @@ void LayoutEditorScene::Load()
 			tileindex++;
 		}
 	}
+	viewport = {
+		0,
+		0,
+		flexDrawSpace->r.w / 18,
+		flexDrawSpace->r.h / 18
+	};
 	ts = TileSet2("assets/tilemap_packed.png", 18, 18);
-	tm = TileMap2(flexDrawSpace->r.x, flexDrawSpace->r.y, flexDrawSpace->r.w /18, flexDrawSpace->r.h /18, &ts, &viewport);
+	tm = TileMap2(flexDrawSpace->r.x, flexDrawSpace->r.y, 200, flexDrawSpace->r.h / 18,  flexDrawSpace->r.w /18, flexDrawSpace->r.h /18,&ts, &viewport);
 	
 	for (int x = 0; x < tm.width ; x++)
 	{
@@ -142,6 +143,36 @@ void LayoutEditorScene::Update()
 			// Perform actions with tileIndex or gridIndex as needed.
 			TraceLog(LOG_INFO, "GridIndex %d , tileIndex %d", gridIndex, tileIndex);
 			tileMapRender->grid[gridIndex] = selectedTileIndex;
+		}
+	}
+
+	if (IsKeyDown(KEY_RIGHT))
+	{
+		if (viewport.x + viewport.width < tm.width)
+		{
+			viewport.x += 1;
+		}
+	}
+	if (IsKeyDown(KEY_LEFT))
+	{
+		if (viewport.x > 0)
+		{
+			viewport.x -= 1;
+
+		}
+	}
+	if (IsKeyDown(KEY_DOWN))
+	{
+		if (viewport.y + viewport.height < tm.height)
+		{
+			viewport.y += 1;
+		}
+	}
+	if (IsKeyDown(KEY_UP))
+	{
+		if (viewport.y > 0)
+		{
+			viewport.y -= 1;
 		}
 	}
 
