@@ -11,7 +11,7 @@
 //todo : rewrite flexrect in oop
 #include "raygui.h"
 
-
+#include "TileMap.hpp"
 NezRect_i rect;
 
 FlexRect* windowRect; // main window
@@ -33,7 +33,15 @@ TileMap* tileMapRender;
 
 int selectedTileIndex = -1;
 
+TileMap2 tm;
+TileSet2 ts;
 
+Viewport viewport = {
+	0,
+	0,
+	15,
+	15
+};
 void LayoutEditorScene::Load()
 {
 	//loading logic here
@@ -75,7 +83,16 @@ void LayoutEditorScene::Load()
 			tileindex++;
 		}
 	}
+	ts = TileSet2("assets/tilemap_packed.png", 18, 18);
+	tm = TileMap2(flexDrawSpace->r.x, flexDrawSpace->r.y, flexDrawSpace->r.w /18, flexDrawSpace->r.h /18, &ts, &viewport);
 	
+	for (int x = 0; x < tm.width ; x++)
+	{
+		for (int y = 0; y < tm.height; y++)
+		{
+			tm.grid[x][y] = GetRandomValue(0, 126);
+		}
+	}
 
 }
 
@@ -173,10 +190,11 @@ void LayoutEditorScene::Draw()
 
 	TileMapDrawGrid(tileMap, BLACK);
 	TileMapDrawExWorld(tileMap, (int)tileSetFlex->r.x, (int)tileSetFlex->r.y, tileSetFlex->r.w, tileSetFlex->r.h);
-	TileMapDrawGrid(tileMapRender, BLACK);
-	TileMapDrawExWorld(tileMapRender, (int)flexDrawSpace->r.x, (int)flexDrawSpace->r.y, flexDrawSpace->r.w, flexDrawSpace->r.h);
+	//TileMapDrawGrid(tileMapRender, BLACK);
+	//TileMapDrawExWorld(tileMapRender, (int)flexDrawSpace->r.x, (int)flexDrawSpace->r.y, flexDrawSpace->r.w, flexDrawSpace->r.h);
 	//DrawRectangleLines(cam.x, cam.y, cam.w, cam.h, GREEN);
-	
+	tm.DrawGrid(BLACK);
+	tm.Draw();
 
 
 }

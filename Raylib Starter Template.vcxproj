@@ -108,6 +108,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -149,7 +150,9 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="TextureAtlas.h" />
     <ClInclude Include="tilemap.h" />
+    <ClInclude Include="TileMap.hpp" />
     <ClInclude Include="tileset.h" />
+    <ClInclude Include="TileSet.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
